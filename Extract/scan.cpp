@@ -5,6 +5,9 @@
 #include <vector>
 #include <mutex>
 #include <cstdlib>
+#include <sstream>
+
+
 std::vector<std::wstring> dirsToWatch = {
     L"C:\\Windows\\System32",
     L"C:\\Windows\\SysWOW64",

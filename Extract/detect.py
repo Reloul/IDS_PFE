@@ -5,9 +5,14 @@ import numpy as np
 import pickle
 import os
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Récupère le chemin du dossier contenant le script
+clf_path = os.path.join(BASE_DIR, "..", "Classifier", "classifier.pkl")
+features_path = os.path.join(BASE_DIR, "..", "Classifier", "features.pkl")
+
 # Charger le modèle et les features
-clf = joblib.load("../Classifier/classifier.pkl")
-features = pickle.loads(open("features.pkl", "rb").read())
+clf = joblib.load(clf_path)
+features = pickle.loads(open(features_path, "rb").read())
 
 def extract_pe_features(file_path):
     try:
@@ -37,7 +42,7 @@ def extract_pe_features(file_path):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python ../Extract/detect.py <fichier>")
+        print("Usage: python detect.py <fichier>")
         sys.exit(0)
 
     file_path = sys.argv[1]
