@@ -16,16 +16,17 @@ clf = joblib.load(clf_path)
 features = pickle.loads(open(features_path, "rb").read())
 
 def is_pe_file(file_path):
+    if not os.path.isfile(file_path):  # Vérifier que ce n'est pas un dossier
+        return False
     try:
         pefile.PE(file_path)
         return True
-    except pefile.PEFormatError:
-        return False
+    except Exception:
+        return False  # Retourne False au lieu de lever une erreur
 
 
 def extract_pe_features(file_path):
     if not is_pe_file(file_path):
-        print(f"Erreur : {file_path} n'est pas un fichier PE valide.")
         return None
     try:
         pe = pefile.PE(file_path)

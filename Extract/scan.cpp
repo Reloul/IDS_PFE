@@ -6,6 +6,7 @@
 #include <mutex>
 #include <cstdlib>
 #include <sstream>
+#include <filesystem>
 
 
 std::vector<std::wstring> dirsToWatch = {
@@ -29,7 +30,8 @@ void AnalyzeFileWithPython(const std::wstring& filePath) {
     int result = _wsystem(command.str().c_str());
     
     if (result == 1) { // Si le script retourne 1 → Malware détecté
-        std::wcerr << L"[DETECTION MALWARE] Le fichier " << filePath << L" est potentiellement un malware !" << std::endl;
+        std::wstring fileName = std::filesystem::path(filePath).filename();
+        std::wcerr << L"[DETECTION MALWARE] Le fichier " << fileName << L" situé à "<< filePath << L" est potentiellement un malware !" << std::endl;
     }
 }
 
