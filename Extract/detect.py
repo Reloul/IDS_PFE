@@ -4,6 +4,7 @@ import pefile
 import numpy as np
 import pickle
 import os
+import pefile
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Récupère le chemin du dossier contenant le script
@@ -14,7 +15,18 @@ features_path = os.path.join(BASE_DIR, "..", "Classifier", "features.pkl")
 clf = joblib.load(clf_path)
 features = pickle.loads(open(features_path, "rb").read())
 
+def is_pe_file(file_path):
+    try:
+        pefile.PE(file_path)
+        return True
+    except pefile.PEFormatError:
+        return False
+
+
 def extract_pe_features(file_path):
+    if not is_pe_file(file_path):
+        print(f"Erreur : {file_path} n'est pas un fichier PE valide.")
+        return None
     try:
         pe = pefile.PE(file_path)
         pe_features = []

@@ -74,9 +74,11 @@ void WatchDirectory(const std::wstring& path) {
             do {
                 // Récupérer le nom du fichier modifié
                 std::wstring fileName(fni->FileName, fni->FileNameLength / sizeof(WCHAR));
-                 // Analyse immédiate du fichier détecté
-                std::wstring fullPath = path + L"\\" + fileName;
-                AnalyzeFileWithPython(fullPath);
+                if (fileName.find(L".exe") != std::wstring::npos || fileName.find(L".dll") != std::wstring::npos || fileName.find(L".sys") != std::wstring::npos) {
+                    // Analyse immédiate du fichier détecté
+                    std::wstring fullPath = path + L"\\" + fileName;
+                    AnalyzeFileWithPython(fullPath);
+                }
                 // Passer au prochain événement (si présent)
                 fni = fni->NextEntryOffset ? reinterpret_cast<FILE_NOTIFY_INFORMATION*>(
                     reinterpret_cast<BYTE*>(fni) + fni->NextEntryOffset) : nullptr;
