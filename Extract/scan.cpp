@@ -67,7 +67,7 @@ void WatchDirectory(const std::wstring& path) {
             buffer,
             sizeof(buffer),
             TRUE,
-            FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
+            FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_CREATION,
             &bytesReturned,
             NULL,
             NULL
