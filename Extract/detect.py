@@ -90,16 +90,29 @@ if __name__ == "__main__":
     features_PE = extract_pe_features(file_path)
     features_IAT = extract_iat_features(file_path)
 
-    # Vérifier si l'extraction a réussi
+        # Vérifier si l'extraction a réussi
     if features_PE is not None and features_IAT is not None:
         pred_PE = clf_PE.predict(features_PE)[0]
         pred_IAT = clf_IAT.predict(features_IAT)[0]
 
-        # Combiner les prédictions (ex: une détection suffit pour alerter)
-        if pred_PE == 1 or pred_IAT == 1:
-            sys.exit(1)  # Malware détecté
+        # Affichage des résultats
+        print("[INFO] Résultat PE Header :", "Malware" if pred_PE == 1 else "Bénin")
+        print("[INFO] Résultat IAT       :", "Malware" if pred_IAT == 1 else "Bénin")
+
+        # Décision finale
+        if pred_PE == 1 and pred_IAT == 1:
+            print("[ALERTE] Le fichier est détecté comme un malware par les deux analyses.")
+            sys.exit(1)
+        elif pred_PE == 1:
+            print("[ALERTE] Le fichier est détecté comme un malware d'après l'analyse de l'en-tête PE.")
+            sys.exit(1)
+        elif pred_IAT == 1:
+            print("[ALERTE] Le fichier est détecté comme un malware d'après l'analyse de l'IAT.")
+            sys.exit(1)
         else:
-            sys.exit(0)  # Fichier légitime
+            print("[OK] Le fichier est considéré comme légitime selon les deux analyses.")
+            sys.exit(0)
     else:
         print("Erreur lors de l'extraction des features.")
         sys.exit(0)
+
